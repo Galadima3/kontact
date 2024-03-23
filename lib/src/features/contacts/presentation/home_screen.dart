@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kontacts/src/features/contacts/data/contact_repository.dart';
 import 'package:kontacts/src/features/contacts/domain/contact.dart';
 import 'package:kontacts/src/features/contacts/presentation/add_contact_screen.dart';
+import 'package:kontacts/src/features/contacts/presentation/contact_controller.dart';
+import 'package:kontacts/src/features/contacts/presentation/edit_contact_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -13,9 +15,11 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  // final isar = ContactRepository();
   @override
   Widget build(BuildContext context) {
     final contacts = ref.watch(contactStreamProvider);
+    //final dex = ref.read(contactStateProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -51,17 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     var lex = data[index];
-                    return lex.toCard();
-                    // return ListTile(
-                    //     title: Text(lex.name),
-                    //     subtitle: Text(lex.phoneNumber.toString()),
-                    // leading: CircleAvatar(
-                    //   backgroundColor: Colors.blueAccent,
-                    //   child: Text(
-                    //     lex.name.firstCharacter(),
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    // ));
+                    return lex.toCard(ref, lex, context);
                   },
                 );
         },
@@ -83,7 +77,7 @@ extension ObtainFirstChar on String {
 }
 
 extension UserExtensions on Contact {
-  Widget toCard() {
+  Widget toCard(WidgetRef ref, Contact x, BuildContext context) {
     return Card(
         child: ListTile(
       //leading: Icon(Icons.person),
@@ -111,10 +105,13 @@ extension UserExtensions on Contact {
             if (value == 'edit') {
               // Handle edit action
               // For example, you can navigate to the edit screen
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return EditContactScreen(contact: x);
+              },));
               print(id);
             } else if (value == 'delete') {
               // Handle delete action
-              // For example, you can show a confirmation dialog before deleting
+              ref.read(contactStateProvider.notifier).deleteContact(id);
             }
           },
         ),

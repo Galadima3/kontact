@@ -19,6 +19,7 @@ class ContactRepository {
     }
     return Future.value(Isar.getInstance());
   }
+  //Future<Contact c> getContact => db 
 
   //Create
   Future<void> saveContact(Contact newContact) async {
@@ -39,17 +40,24 @@ class ContactRepository {
   }
 
   // Update an existing contact
-  Future<void> updateContact(Contact updatedContact) async {
+  Future<void> updateContact(int id, Contact updatedContact) async {
     final isar = await db;
+    //var atreides = await isar.contacts.get(id);
+
     await isar.writeTxn(() async {
-      await isar.contacts.put(updatedContact);
+      var atreides = await isar.contacts.get(id);
+      atreides!.name = updatedContact.name;
+      atreides.phoneNumber = updatedContact.phoneNumber;
+      await isar.contacts.put(atreides);
+      //await isar.contacts.put(updatedContact);
     });
   }
 
   //Delete a contact
   Future<void> deleteContact(int contactID) async {
     final isar = await db;
-    isar.writeTxn(() => isar.contacts.delete(contactID));
+    Future.delayed(const Duration(milliseconds: 1590))
+        .then((_) => isar.writeTxn(() => isar.contacts.delete(contactID)));
   }
 
   //Search/Filter

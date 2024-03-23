@@ -5,6 +5,6 @@ part 'contact.g.dart';
 class Contact {
   Contact({required this.name, required this.phoneNumber});
   Id id = Isar.autoIncrement;
-  final String name;
-  final int phoneNumber;
+  String name;
+  int phoneNumber;
 }

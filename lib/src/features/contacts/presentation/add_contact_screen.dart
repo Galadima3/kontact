@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,32 +24,6 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
     super.dispose();
   }
 
-  // void addContact(
-  //     WidgetRef ref, String name, String phone, BuildContext context) {
-  //   int? parsedPhone = int.tryParse(phone);
-  //   if (parsedPhone != null) {
-  //     ref
-  //         .read(contactProvider)
-  //         .saveContact(Contact(name: name, phoneNumber: parsedPhone));
-
-  //     // Show a snackbar indicating successful saving
-  //     final scaffoldMessenger = ScaffoldMessenger.of(context);
-  //     scaffoldMessenger.showSnackBar(
-  //       const SnackBar(
-  //         content: Text('Contact saved successfully!'),
-  //       ),
-  //     );
-  //   } else {
-  //     // Handle invalid phone number input
-  //     final scaffoldMessenger = ScaffoldMessenger.of(context);
-  //     scaffoldMessenger.showSnackBar(
-  //       const SnackBar(
-  //         content: Text('Invalid phone number format!'),
-  //       ),
-  //     );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -66,7 +38,6 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //name
             Padding(
@@ -101,16 +72,16 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
               ),
             ),
 
-            ElevatedButton(
-                onPressed: nameController.text.isNotEmpty &&
-                        phoneNumberController.text.isNotEmpty
-                    ? () => contactController.addContact(
-                          nameController.text,
-                          phoneNumberController.text,
-                          context
-                        )
-                    : null,
-                child: const Text('Save'))
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: height * 0.05),
+              child: ElevatedButton(
+                  onPressed: nameController.text.isNotEmpty &&
+                          phoneNumberController.text.isNotEmpty
+                      ? () => contactController.addContact(nameController.text,
+                          phoneNumberController.text, context)
+                      : null,
+                  child: const Text('Save')),
+            )
           ],
         ),
       ),

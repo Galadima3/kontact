@@ -33,8 +33,14 @@ class AddContactController extends StateNotifier<bool> {
   }
 
   //Update
+  Future<void> updateContact(Contact updatedContact, int contactID, BuildContext context) async {
+    await contactRepository.updateContact(contactID, updatedContact).then((_) => Navigator.of(context).pop());
+  }
 
   //Delete
+  Future<void> deleteContact(int contactID) async {
+    await contactRepository.deleteContact(contactID);
+  }
 }
 
 final contactStateProvider = StateNotifierProvider<AddContactController, bool>(
