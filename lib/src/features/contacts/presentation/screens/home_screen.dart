@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kontacts/src/features/contacts/data/contact_repository.dart';
 import 'package:kontacts/src/features/contacts/domain/contact.dart';
-import 'package:kontacts/src/features/contacts/presentation/screens/add_contact_screen.dart';
 import 'package:kontacts/src/features/contacts/presentation/contact_controller.dart';
-import 'package:kontacts/src/features/contacts/presentation/screens/edit_contact_screen.dart';
+import 'package:kontacts/src/routing/route_paths.dart';
 import 'dart:developer';
-
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -35,11 +34,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueAccent,
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) {
-              return const AddContactScreen();
-            },
-          ));
+          context.goNamed(
+            RoutePaths.addContactScreenRoute,
+          );
         },
         child: const Icon(
           Icons.edit,
@@ -112,10 +109,8 @@ extension UserExtensions on Contact {
           switch (value) {
             case 'edit':
               // Handle edit action
-              // For example, you can navigate to the edit screen
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => EditContactScreen(contact: x),
-              ));
+              context.pushNamed(RoutePaths.editContactScreenRoute, extra: x);
+
               break;
             case 'delete':
               // Handle delete action

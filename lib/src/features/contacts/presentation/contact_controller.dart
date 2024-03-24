@@ -16,8 +16,6 @@ class AddContactController extends StateNotifier<bool> {
       return;
     }
 
-    
-
     await contactRepository
         .saveContact(Contact(name: name, phoneNumber: phone))
         .then((value) => ScaffoldMessenger.of(context).showSnackBar(
@@ -29,8 +27,11 @@ class AddContactController extends StateNotifier<bool> {
   }
 
   //Update
-  Future<void> updateContact(Contact updatedContact, int contactID, BuildContext context) async {
-    await contactRepository.updateContact(contactID, updatedContact).then((_) => Navigator.of(context).pop());
+  Future<void> updateContact(
+      Contact updatedContact, int contactID, BuildContext context) async {
+    await contactRepository
+        .updateContact(contactID, updatedContact)
+        .then((_) => Navigator.of(context).pop());
   }
 
   //Delete
