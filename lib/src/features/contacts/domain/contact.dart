@@ -6,5 +6,5 @@ class Contact {
   Contact({required this.name, required this.phoneNumber});
   Id id = Isar.autoIncrement;
   String name;
-  int phoneNumber;
+  String phoneNumber;
 }

@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kontacts/src/features/contacts/data/contact_repository.dart';
 import 'package:kontacts/src/features/contacts/domain/contact.dart';
-import 'package:kontacts/src/features/contacts/presentation/add_contact_screen.dart';
+import 'package:kontacts/src/features/contacts/presentation/screens/add_contact_screen.dart';
 import 'package:kontacts/src/features/contacts/presentation/contact_controller.dart';
-import 'package:kontacts/src/features/contacts/presentation/edit_contact_screen.dart';
+import 'package:kontacts/src/features/contacts/presentation/screens/edit_contact_screen.dart';
+import 'dart:developer';
+
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -82,7 +85,7 @@ extension UserExtensions on Contact {
         child: ListTile(
       //leading: Icon(Icons.person),
       title: Text(name),
-      subtitle: Text(phoneNumber.toString()),
+      subtitle: Text(phoneNumber),
       leading: CircleAvatar(
         backgroundColor: Colors.blueAccent,
         child: Text(
@@ -90,32 +93,53 @@ extension UserExtensions on Contact {
           style: const TextStyle(color: Colors.white),
         ),
       ),
-     trailing: PopupMenuButton<String>(
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'edit',
-              child: Text('Edit'),
-            ),
-            const PopupMenuItem(
-              value: 'delete',
-              child: Text('Delete'),
-            ),
-          ],
-          onSelected: (value) {
-            if (value == 'edit') {
+      trailing: PopupMenuButton<String>(
+        itemBuilder: (context) => [
+          const PopupMenuItem(
+            value: 'edit',
+            child: Text('Edit'),
+          ),
+          const PopupMenuItem(
+            value: 'delete',
+            child: Text('Delete'),
+          ),
+          const PopupMenuItem(
+            value: 'call',
+            child: Text('Call'),
+          ),
+        ],
+        onSelected: (value) async {
+          switch (value) {
+            case 'edit':
               // Handle edit action
               // For example, you can navigate to the edit screen
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return EditContactScreen(contact: x);
-              },));
-              print(id);
-            } else if (value == 'delete') {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => EditContactScreen(contact: x),
+              ));
+              break;
+            case 'delete':
               // Handle delete action
               ref.read(contactStateProvider.notifier).deleteContact(id);
-            }
-          },
-        ),
-      
+              break;
+            case 'call':
+              // Handle delete action
+              await dialNumber(x.phoneNumber.toString());
+              break;
+            default:
+              // Handle any other unexpected value
+              log("Unknown selection: $value");
+          }
+        },
+      ),
     ));
+  }
+
+  Future<void> dialNumber(String phoneNumber) async {
+    //final url = 'tel:$phoneNumber';
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 }

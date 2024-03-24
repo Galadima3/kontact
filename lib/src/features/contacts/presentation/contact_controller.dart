@@ -16,18 +16,14 @@ class AddContactController extends StateNotifier<bool> {
       return;
     }
 
-    int? parsedPhone = int.tryParse(phone);
-    if (parsedPhone == null) {
-      state = false; // Set state to indicate invalid phone number
-      return;
-    }
+    
 
     await contactRepository
-        .saveContact(Contact(name: name, phoneNumber: parsedPhone))
+        .saveContact(Contact(name: name, phoneNumber: phone))
         .then((value) => ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Contact added successfully!')),
-            ))
-        .whenComplete(() => Future.delayed(const Duration(milliseconds: 1500)))
+            ));
+    Future.delayed(const Duration(milliseconds: 1500))
         .then((value) => Navigator.of(context).pop());
     state = true; // Set state to indicate successful saving
   }

@@ -90,7 +90,7 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
                           Contact(
                             name: nameController.text,
                             phoneNumber:
-                                int.tryParse(phoneNumberController.text)!,
+                               phoneNumberController.text
                           ),
                           widget.contact.id,
                           context)

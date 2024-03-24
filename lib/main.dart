@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kontacts/src/features/contacts/presentation/home_screen.dart';
+import 'package:kontacts/src/features/contacts/presentation/screens/home_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
