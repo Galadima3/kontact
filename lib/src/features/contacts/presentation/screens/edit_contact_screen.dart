@@ -6,11 +6,10 @@ import 'package:kontacts/src/features/contacts/presentation/contact_controller.d
 
 class EditContactScreen extends ConsumerStatefulWidget {
   final Contact contact;
-  const EditContactScreen({super.key, required this.contact});
+  const EditContactScreen({Key? key, required this.contact}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _EditContactScreenState();
+  _EditContactScreenState createState() => _EditContactScreenState();
 }
 
 class _EditContactScreenState extends ConsumerState<EditContactScreen> {
@@ -23,7 +22,7 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
     super.initState();
     nameController = TextEditingController(text: widget.contact.name);
     phoneNumberController =
-        TextEditingController(text: widget.contact.phoneNumber.toString());
+        TextEditingController(text: widget.contact.phoneNumber);
   }
 
   @override
@@ -40,19 +39,17 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Contact'),
+        title: const Text('Edit Contact'),
         centerTitle: true,
       ),
-      body: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: formKey,
-        child: Column(
-          children: [
-            //name
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 8.0, vertical: height * 0.05),
-              child: TextFormField(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
                 controller: nameController,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
@@ -63,14 +60,10 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
                   ),
                 ),
               ),
-            ),
-
-            //phoneNumber
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: TextFormField(
+              const SizedBox(height: 20),
+              TextFormField(
                 controller: phoneNumberController,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: 'Phone',
                   prefixIcon: const Icon(Icons.phone),
@@ -79,25 +72,24 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
                   ),
                 ),
               ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: height * 0.05),
-              child: ElevatedButton(
-                  onPressed: nameController.text.isNotEmpty &&
-                          phoneNumberController.text.isNotEmpty
-                      ? () => contactController.updateContact(
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    contactController.updateContact(
                           Contact(
                             name: nameController.text,
                             phoneNumber:
                                phoneNumberController.text
                           ),
                           widget.contact.id,
-                          context)
-                      : null,
-                  child: const Text('Save')),
-            )
-          ],
+                          context);
+                  }
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );

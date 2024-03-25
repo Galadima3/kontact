@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import 'package:kontacts/src/features/contacts/presentation/contact_controller.dart';
 
 class AddContactScreen extends ConsumerStatefulWidget {
-  const AddContactScreen({super.key});
+  const AddContactScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AddContactScreenState();
+  _AddContactScreenState createState() => _AddContactScreenState();
 }
 
 class _AddContactScreenState extends ConsumerState<AddContactScreen> {
   final nameController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  bool isVerified = false;
+  String? selectedCountryCode;
 
   @override
   void dispose() {
@@ -34,16 +34,13 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
         title: const Text('Add Contact'),
         centerTitle: true,
       ),
-      body: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: formKey,
-        child: Column(
-          children: [
-            //name
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 8.0, vertical: height * 0.05),
-              child: TextFormField(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
                 controller: nameController,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
@@ -54,35 +51,35 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
                   ),
                 ),
               ),
-            ),
-
-            //phoneNumber
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: TextFormField(
-                controller: phoneNumberController,
-                keyboardType: TextInputType.number,
+              const SizedBox(height: 20),
+              IntlPhoneField(
                 decoration: InputDecoration(
-                  hintText: 'Phone',
-                  prefixIcon: const Icon(Icons.phone),
+                  labelText: 'Phone Number',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
+                controller: phoneNumberController,
+                initialCountryCode: 'NG',
+                onChanged: (phone) {
+                  selectedCountryCode = phone.countryCode;
+                },
               ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: height * 0.05),
-              child: ElevatedButton(
-                  onPressed: nameController.text.isNotEmpty &&
-                          phoneNumberController.text.isNotEmpty
-                      ? () => contactController.addContact(nameController.text,
-                          phoneNumberController.text, context)
-                      : null,
-                  child: const Text('Save')),
-            )
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    contactController.addContact(
+                      nameController.text,
+                      '$selectedCountryCode${phoneNumberController.text}',
+                      context,
+                    );
+                  }
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );

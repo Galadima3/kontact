@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   //final String title;
@@ -23,14 +24,14 @@ class CustomAlertDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             onCancel();
-            Navigator.of(context).pop();
+            context.pop();
           },
           child: const Text('Cancel'),
         ),
         TextButton(
           onPressed: () {
             onConfirm();
-            Navigator.of(context).pop();
+           context.pop();
           },
           child: const Text('Confirm'),
         ),
