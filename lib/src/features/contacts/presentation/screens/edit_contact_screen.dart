@@ -6,9 +6,10 @@ import 'package:kontacts/src/features/contacts/presentation/contact_controller.d
 
 class EditContactScreen extends ConsumerStatefulWidget {
   final Contact contact;
-  const EditContactScreen({Key? key, required this.contact}) : super(key: key);
+  const EditContactScreen({super.key, required this.contact});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditContactScreenState createState() => _EditContactScreenState();
 }
 
@@ -34,7 +35,7 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    
     final contactController = ref.read(contactStateProvider.notifier);
 
     return Scaffold(

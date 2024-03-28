@@ -24,6 +24,7 @@ class ContactRepository {
   //Create
   Future<void> saveContact(Contact newContact) async {
     final isar = await db;
+    
     isar.writeTxnSync(() => isar.contacts.putSync(newContact));
   }
 

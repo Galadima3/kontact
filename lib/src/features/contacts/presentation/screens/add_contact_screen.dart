@@ -5,9 +5,10 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:kontacts/src/features/contacts/presentation/contact_controller.dart';
 
 class AddContactScreen extends ConsumerStatefulWidget {
-  const AddContactScreen({Key? key}) : super(key: key);
+  const AddContactScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AddContactScreenState createState() => _AddContactScreenState();
 }
 
@@ -26,7 +27,7 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    
     final contactController = ref.read(contactStateProvider.notifier);
 
     return Scaffold(

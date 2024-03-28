@@ -3,6 +3,7 @@ import 'package:kontacts/src/features/contacts/domain/contact.dart';
 import 'package:kontacts/src/features/contacts/presentation/screens/add_contact_screen.dart';
 import 'package:kontacts/src/features/contacts/presentation/screens/edit_contact_screen.dart';
 import 'package:kontacts/src/features/contacts/presentation/screens/home_screen.dart';
+import 'package:kontacts/src/features/local_auth/presentation/local_auth_screen.dart';
 import 'package:kontacts/src/routing/route_paths.dart';
 
 final router = GoRouter(
@@ -11,8 +12,13 @@ final router = GoRouter(
     GoRoute(
       name: 'home',
       path: '/',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const LocalAuthScreen(),
       routes: [
+        GoRoute(
+          path: RoutePaths.homeScreenRoute,
+          name: RoutePaths.homeScreenRoute,
+          builder: (context, state) => const HomeScreen(),
+        ),
         GoRoute(
           name: RoutePaths.addContactScreenRoute,
           path: RoutePaths.addContactScreenRoute,
