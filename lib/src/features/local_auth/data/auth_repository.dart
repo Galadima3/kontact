@@ -32,25 +32,13 @@ class AuthenticationRepository {
     return availableBiometrics;
   }
 
-  Future<bool> authenticate() async {
-    try {
-      return await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-        ),
-      );
-    } on PlatformException catch (e) {
-      log(e.toString());
-      return false;
-    }
-  }
+  
 
   Future<bool> authenticateWithBiometrics() async {
     try {
       return await auth.authenticate(
         localizedReason:
-            'Scan your fingerprint (or face or whatever) to authenticate',
+            'Scan your fingerprint to authenticate',
         options: const AuthenticationOptions(
           stickyAuth: true,
           biometricOnly: true,

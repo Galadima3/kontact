@@ -24,7 +24,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//TODO:
-//1. Add intl phone field
-//2. Study more GoRouter
-//3. Unit & Widget test

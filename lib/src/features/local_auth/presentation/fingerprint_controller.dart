@@ -11,8 +11,6 @@ class AuthenticationController extends StateNotifier<AsyncValue<bool>> {
       : super(const AsyncData<bool>(false));
 
   Future<void> authenticateWithBiometrics() async {
-    //  state = const AsyncLoading();
-    //  state = await AsyncValue.guard(_authRepository.authenticateWithBiometrics());
     try {
       state = const AsyncLoading();
       bool authenticated = await _authRepository.authenticateWithBiometrics();

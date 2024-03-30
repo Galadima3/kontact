@@ -3,10 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kontacts/src/features/local_auth/data/auth_repository.dart';
-import 'package:kontacts/src/features/local_auth/presentation/fingerprint_bottom_sheet.dart';
+
 import 'package:kontacts/src/features/local_auth/presentation/fingerprint_controller.dart';
 import 'dart:developer';
+
+import 'package:kontacts/src/routing/route_paths.dart';
 // Import your AuthenticationRepository class
 
 class LocalAuthScreen extends ConsumerWidget {
@@ -21,11 +24,8 @@ class LocalAuthScreen extends ConsumerWidget {
           await AuthenticationRepository().getAvailableBiometrics();
       log("Bio +$biomtericTypes");
       if (biomtericTypes.isNotEmpty) {
-        await showModalBottomSheet(
-          context: context,
-          builder: (context) => const FingerprintBottomSheet(),
-        );
-        notifier.authenticateWithBiometrics();
+        notifier.authenticateWithBiometrics().then((value) =>
+            context.pushReplacementNamed(RoutePaths.homeScreenRoute));
       } else {
         // Handle no biometrics case (e.g., show error message)
         ScaffoldMessenger.of(context).showSnackBar(
@@ -40,7 +40,6 @@ class LocalAuthScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authenticationControllerProvider);
 
-    //TODO:fix this issue
     return Scaffold(
       appBar: AppBar(
         title: const Text('Fingerprint Authentication'),
